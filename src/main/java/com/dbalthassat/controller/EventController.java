@@ -22,7 +22,6 @@ public class EventController {
 	@Autowired
 	private EventService eventService;
 
-    @Transactional
     @SuppressWarnings("MVCPathVariableInspection")
     @RequestMapping(value = {"", "/", "/{id}"},
             method = RequestMethod.POST, consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
