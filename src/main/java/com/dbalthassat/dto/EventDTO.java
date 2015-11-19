@@ -20,7 +20,7 @@ public class EventDTO {
 	private String slug;
 
 	@Valid
-	private List<Person> persons;
+	private List<PersonDTO> persons;
 
 	public Long getId() {
 		return id;
@@ -46,11 +46,11 @@ public class EventDTO {
 		this.slug = slug;
 	}
 
-	public List<Person> getPersons() {
+	public List<PersonDTO> getPersons() {
 		return persons;
 	}
 
-	public void setPersons(List<Person> persons) {
+	public void setPersons(List<PersonDTO> persons) {
 		this.persons = persons;
 	}
 }

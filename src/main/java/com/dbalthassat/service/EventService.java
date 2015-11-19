@@ -7,6 +7,7 @@ import com.dbalthassat.repository.EventRepository;
 import com.dbalthassat.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EventService {
@@ -16,13 +17,14 @@ public class EventService {
 	@Autowired
 	private PersonRepository personRepository;
 
+    @Transactional
 	public Event create(Event event) {
 		event.getPersons().stream().map(PersonOfEvent::getPerson).forEach(p -> {
 			if(p.getId() == null) {
 				personRepository.save(p);
 			}
 		});
-		return eventRepository.save(event);
+        return eventRepository.save(event);
 	}
 
 	public Event find(Long id) throws NotFoundException {

@@ -1,8 +1,10 @@
 package com.dbalthassat.mapper;
 
 import com.dbalthassat.dto.EventDTO;
+import com.dbalthassat.dto.PersonDTO;
 import com.dbalthassat.entity.Event;
 import com.dbalthassat.entity.PersonOfEvent;
+import com.dbalthassat.exception.NotFoundException;
 
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -10,7 +12,7 @@ import java.util.stream.Collectors;
 public class EventMapper {
 	private EventMapper() {}
 
-	public static Event map(EventDTO dto) {
+	public static Event map(EventDTO dto) throws NotFoundException {
 		if(dto == null) {
 			return null;
 		}
@@ -18,8 +20,11 @@ public class EventMapper {
 		event.setId(dto.getId());
 		event.setName(dto.getName());
 		event.setSlug(dto.getSlug());
-		event.setPersons(dto.getPersons().stream().map(p -> new PersonOfEvent(event, p)).collect(Collectors.toSet()));
-		return event;
+        event.setPersons(dto.getPersons().stream().map(p -> new PersonOfEvent(event, PersonMapper.map(p))).collect(Collectors.toSet()));
+        for(PersonOfEvent personOfEvent: event.getPersons()) {
+            PersonOfEventMapper.addPeopleToAvoid(event, personOfEvent);
+        }
+        return event;
 	}
 
 	public static EventDTO map(Event event) {
@@ -36,7 +41,9 @@ public class EventMapper {
 	public static EventDTO mapPersons(Event event, EventDTO dto) {
 		Objects.requireNonNull(event);
 		Objects.requireNonNull(dto);
-		dto.setPersons(event.getPersons().stream().map(PersonOfEvent::getPerson).collect(Collectors.toList()));
+		dto.setPersons(event.getPersons().stream()
+                .map(poe -> PersonMapper.mapPeopleToAvoid(poe, PersonMapper.map(poe.getPerson())))
+                .collect(Collectors.toList()));
 		return dto;
 	}
 }

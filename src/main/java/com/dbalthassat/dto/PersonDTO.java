@@ -1,10 +1,13 @@
 package com.dbalthassat.dto;
 
+import java.util.List;
+
 public class PersonDTO {
 	private Long id;
 	private String name;
 	private Boolean hasFriend;
 	private String friend;
+    private List<String> peopleToAvoid;
 
 	public Long getId() {
 		return id;
@@ -37,4 +40,12 @@ public class PersonDTO {
 	public void setFriend(String friend) {
 		this.friend = friend;
 	}
+
+    public List<String> getPeopleToAvoid() {
+        return peopleToAvoid;
+    }
+
+    public void setPeopleToAvoid(List<String> peopleToAvoid) {
+        this.peopleToAvoid = peopleToAvoid;
+    }
 }

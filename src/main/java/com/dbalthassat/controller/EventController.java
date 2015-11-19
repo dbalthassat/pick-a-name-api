@@ -7,6 +7,8 @@ import com.dbalthassat.exception.BadRequestException;
 import com.dbalthassat.exception.NotFoundException;
 import com.dbalthassat.mapper.EventMapper;
 import com.dbalthassat.service.EventService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeTypeUtils;
@@ -20,18 +22,18 @@ public class EventController {
 	@Autowired
 	private EventService eventService;
 
-	@SuppressWarnings("MVCPathVariableInspection")
-	@RequestMapping(value = {"/", "/{id}"}, method = RequestMethod.POST, consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
-	@Transactional
-	public EventDTO createEvent(@Validated(Create.class) @RequestBody EventDTO event,
-							BindingResult result) throws BadRequestException {
-		if(result.hasErrors()) {
-			throw new BadRequestException(result.getAllErrors().toString());
-		}
-		Event entity = eventService.create(EventMapper.map(event));
-		EventDTO dto = EventMapper.map(entity);
-		return EventMapper.mapPersons(entity, dto);
-	}
+    @Transactional
+    @SuppressWarnings("MVCPathVariableInspection")
+    @RequestMapping(value = {"", "/", "/{id}"},
+            method = RequestMethod.POST, consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public EventDTO createEvent(@Validated(Create.class) @RequestBody EventDTO event, BindingResult result) throws BadRequestException, NotFoundException {
+        if(result.hasErrors()) {
+            throw new BadRequestException(result.getAllErrors().toString());
+        }
+        Event entity = eventService.create(EventMapper.map(event));
+        EventDTO dto = EventMapper.map(entity);
+        return EventMapper.mapPersons(entity, dto);
+    }
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 	public EventDTO findEvent(@PathVariable Long id) throws NotFoundException {
