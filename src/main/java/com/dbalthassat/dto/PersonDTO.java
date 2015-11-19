@@ -1,5 +1,8 @@
 package com.dbalthassat.dto;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import java.util.LinkedList;
 import java.util.List;
 
 public class PersonDTO {
@@ -7,7 +10,7 @@ public class PersonDTO {
 	private String name;
 	private Boolean hasFriend;
 	private String friend;
-    private List<String> peopleToAvoid;
+    private List<String> peopleToAvoid = new LinkedList<>();
 
 	public Long getId() {
 		return id;

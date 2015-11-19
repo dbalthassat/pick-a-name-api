@@ -21,9 +21,7 @@ public class EventMapper {
 		event.setName(dto.getName());
 		event.setSlug(dto.getSlug());
         event.setPersons(dto.getPersons().stream().map(p -> new PersonOfEvent(event, PersonMapper.map(p))).collect(Collectors.toSet()));
-        for(PersonOfEvent personOfEvent: event.getPersons()) {
-            PersonOfEventMapper.addPeopleToAvoid(event, personOfEvent);
-        }
+		PersonOfEventMapper.addPeopleToAvoid(dto, event);
         return event;
 	}
 

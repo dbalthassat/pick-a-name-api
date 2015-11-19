@@ -2,6 +2,7 @@ package com.dbalthassat.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -21,6 +22,8 @@ public class Application extends SpringBootServletInitializer {
     public ObjectMapper objectMapper() {
         HibernateAwareObjectMapper hibernateAwareObjectMapper = new HibernateAwareObjectMapper();
         hibernateAwareObjectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+		hibernateAwareObjectMapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
+        hibernateAwareObjectMapper.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
         return hibernateAwareObjectMapper;
     }
 
